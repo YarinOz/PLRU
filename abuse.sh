@@ -5,5 +5,6 @@ input="A B D H X B F H B "
 for i in {1..10}; do
     input+=${iterable}
 done
+input="${input%?}"
 
 python3 nx_tree.py <<< "$input"

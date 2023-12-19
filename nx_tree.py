@@ -33,7 +33,7 @@ def hierarchy_pos(G, root=None, width=1., vert_gap = 0.2, vert_loc = 0, xcenter 
             
     return _hierarchy_pos(G, root, width, vert_gap, vert_loc, xcenter)
 
-def TOUCH(line):  # check if line is miss or hit
+def TOUCH(line,plru):  # check if line is miss or hit
     if line not in valid_inputs:
         print("Invalid line!")
         return
@@ -51,7 +51,6 @@ def TOUCH(line):  # check if line is miss or hit
                 G.nodes[traverseal[2]]['state'] = 1 - G.nodes[traverseal[2]]['state'] # toggle level3 state
             return  
     # miss
-    plru = PLRU()
     print("Miss!")
     G.nodes[plru]['state'] = line
     traverseal = nx.shortest_path(G, source=1, target=plru)
@@ -60,45 +59,45 @@ def TOUCH(line):  # check if line is miss or hit
     return
         
 # 0 is left, 1 is right, PLRU returns PLRU line (8,9,10,11,12,13,14,15)
-def PLRU():
-    plru = 1                     # start at root
-    state = G.nodes[plru]['state']
-    if state == 0:               # left
-        plru = 2
-        if state == 0:           # left.left
-            plru = 4
-            if state == 0:       # left.left.left    A
-                plru = 8
-                return plru
-            elif state == 1:     # left.left.right   B
-                plru = 9
-                return plru
-        elif state == 1:         # left.right
-            plru = 5
-            if state == 0:       # left.right.left   C
-                plru = 10
-                return plru
-            elif state == 1:     # left.right.right  D
-                plru = 11
-                return plru
-    elif state == 1:             # right
-        plru = 3
-        if state == 0:           # right.left
-            plru = 6
-            if state == 0:       # right.left.left   E
-                plru = 12
-                return plru
-            elif state == 1:     # right.left.right  F
-                plru = 13
-                return plru
-        elif state == 1:         # right.right
-            plru = 7
-            if state == 0:       # right.right.left  G
-                plru = 14
-                return plru
-            elif state == 1:     # right.right.right H
-                plru = 15
-                return plru
+# def PLRU():
+#     plru = 1                     # start at root
+#     state = G.nodes[plru]['state']
+#     if state == 0:               # left
+#         plru = 2
+#         if state == 0:           # left.left
+#             plru = 4
+#             if state == 0:       # left.left.left    A
+#                 plru = 8
+#                 return plru
+#             elif state == 1:     # left.left.right   B
+#                 plru = 9
+#                 return plru
+#         elif state == 1:         # left.right
+#             plru = 5
+#             if state == 0:       # left.right.left   C
+#                 plru = 10
+#                 return plru
+#             elif state == 1:     # left.right.right  D
+#                 plru = 11
+#                 return plru
+#     elif state == 1:             # right
+#         plru = 3
+#         if state == 0:           # right.left
+#             plru = 6
+#             if state == 0:       # right.left.left   E
+#                 plru = 12
+#                 return plru
+#             elif state == 1:     # right.left.right  F
+#                 plru = 13
+#                 return plru
+#         elif state == 1:         # right.right
+#             plru = 7
+#             if state == 0:       # right.right.left  G
+#                 plru = 14
+#                 return plru
+#             elif state == 1:     # right.right.right H
+#                 plru = 15
+#                 return plru
 def color():
     node = 1
     if G.nodes[node]['state'] == 0:
@@ -109,19 +108,23 @@ def color():
             node+=2
             if G.nodes[node]['state'] == 0:
                 G[node][node+4]['color'] = 'red'
-                return
+                plru = node+4
+                return plru
             elif G.nodes[node]['state'] == 1:
                 G[node][node+5]['color'] = 'red'
-                return
+                plru = node+5
+                return plru
         elif G.nodes[node]['state'] == 1:
             G[node][node+3]['color'] = 'red'
             node+=3
             if G.nodes[node]['state'] == 0:
                 G[node][node+5]['color'] = 'red'
-                return
+                plru = node+5
+                return plru
             elif G.nodes[node]['state'] == 1:
                 G[node][node+6]['color'] = 'red'
-                return
+                plru = node+6
+                return plru
     elif G.nodes[node]['state'] == 1:
         G[node][node+2]['color'] = 'red'
         node+=2
@@ -130,19 +133,23 @@ def color():
             node+=3
             if G.nodes[node]['state'] == 0:
                 G[node][node+6]['color'] = 'red'
-                return
+                plru = node+6
+                return plru
             elif G.nodes[node]['state'] == 1:
                 G[node][node+7]['color'] = 'red'
-                return
+                plru = node+7
+                return plru
         elif G.nodes[node]['state'] == 1:
             G[node][node+4]['color'] = 'red'
             node+=4
             if G.nodes[node]['state'] == 0:
                 G[node][node+7]['color'] = 'red'
-                return
+                plru = node+7
+                return plru
             elif G.nodes[node]['state'] == 1:
                 G[node][node+8]['color'] = 'red'
-                return
+                plru = node+8
+                return plru
             
 if __name__ == "__main__":
         
@@ -162,19 +169,20 @@ if __name__ == "__main__":
     #first coloring
     for i in G.edges():
         G[i[0]][i[1]]['color'] = 'black'
-    color()
+    plru = color()
     ##### Run touch sequence in format {line1 line2 line3 ...}#####  touch only lines in valid_inputs
     print("Choose a line to touch:")
 
     line_seq = input().split(' ')
     for line in line_seq:
-        TOUCH(line)
+        TOUCH(line,plru)
+        plru = color()
+        
     # color edges
     for i in G.edges():
         G[i[0]][i[1]]['color'] = 'black'
     color()
     edge_colors = [G[u][v]['color'] if 'color' in G[u][v] else 'black' for u, v in G.edges()]
-
     node_states = {i: G.nodes[i]['state'] for i in G.nodes}
     pos = hierarchy_pos(G,1)
     nx.draw(G, pos=pos, labels=node_states,font_size=22,with_labels=True, node_size=1200, edge_color=edge_colors)
