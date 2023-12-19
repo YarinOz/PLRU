@@ -41,14 +41,18 @@ def TOUCH(line):  # check if line is miss or hit
     # hit
         if line == G.nodes[i]['state']:  
             traverseal = nx.shortest_path(G, source=1, target=i)
-            print("Hit!", traverseal)
-            for i,j in zip(traverseal[:-1],traverseal[1:-1]):   # toggle away from hit line
-                if G[i][j]['color'] == "red":
-                    G.nodes[i]['state'] = 1 - G.nodes[i]['state'] # toggle state
-            return
+            print("Hit!")
+            # print("Path:", traverseal)
+            if (G.nodes[traverseal[0]]['state'] == 0 and i in [8,9,10,11]) or (G.nodes[traverseal[0]]['state'] == 1 and i in [12,13,14,15]):
+                G.nodes[traverseal[0]]['state'] = 1 - G.nodes[traverseal[0]]['state'] # toggle root state
+            if (G.nodes[traverseal[1]]['state'] == 0 and i in [8,9,12,13]) or (G.nodes[traverseal[1]]['state'] == 1 and i in [10,11,14,15]):
+                G.nodes[traverseal[1]]['state'] = 1 - G.nodes[traverseal[1]]['state'] # toggle level2 state
+            if (G.nodes[traverseal[2]]['state'] == 0 and i%2==0 ) or (G.nodes[traverseal[2]]['state'] == 1 and i%2==1):
+                G.nodes[traverseal[2]]['state'] = 1 - G.nodes[traverseal[2]]['state'] # toggle level3 state
+            return  
     # miss
     plru = PLRU()
-    print("Miss!", plru)
+    print("Miss!")
     G.nodes[plru]['state'] = line
     traverseal = nx.shortest_path(G, source=1, target=plru)
     for i in traverseal[:-1]:
