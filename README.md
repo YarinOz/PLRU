@@ -1,0 +1,1 @@
+- cache miss work good, cache hit toggle need to be worked on (understand fully PLRU hit toggle)
