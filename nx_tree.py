@@ -42,8 +42,9 @@ def TOUCH(line):  # check if line is miss or hit
         if line == G.nodes[i]['state']:  
             traverseal = nx.shortest_path(G, source=1, target=i)
             print("Hit!", traverseal)
-            for i in traverseal[:-1]:
-                G.nodes[i]['state'] = 1 - G.nodes[i]['state'] # toggle state
+            for i,j in zip(traverseal[:-1],traverseal[1:-1]):   # toggle away from hit line
+                if G[i][j]['color'] == "red":
+                    G.nodes[i]['state'] = 1 - G.nodes[i]['state'] # toggle state
             return
     # miss
     plru = PLRU()
@@ -154,7 +155,10 @@ if __name__ == "__main__":
         G.nodes[i]['state']=0
     for i,j in zip(lines,['A','B','C','D','E','F','G','H']):
         G.nodes[i]['state']=j
-    
+    #first coloring
+    for i in G.edges():
+        G[i[0]][i[1]]['color'] = 'black'
+    color()
     ##### Run touch sequence in format {line1 line2 line3 ...}#####  touch only lines in valid_inputs
     print("Choose a line to touch:")
 
@@ -162,6 +166,8 @@ if __name__ == "__main__":
     for line in line_seq:
         TOUCH(line)
     # color edges
+    for i in G.edges():
+        G[i[0]][i[1]]['color'] = 'black'
     color()
     edge_colors = [G[u][v]['color'] if 'color' in G[u][v] else 'black' for u, v in G.edges()]
 
