@@ -57,47 +57,7 @@ def TOUCH(line,plru):  # check if line is miss or hit
     for i in traverseal[:-1]:
         G.nodes[i]['state'] = 1 - G.nodes[i]['state'] # toggle state
     return
-        
-# 0 is left, 1 is right, PLRU returns PLRU line (8,9,10,11,12,13,14,15)
-# def PLRU():
-#     plru = 1                     # start at root
-#     state = G.nodes[plru]['state']
-#     if state == 0:               # left
-#         plru = 2
-#         if state == 0:           # left.left
-#             plru = 4
-#             if state == 0:       # left.left.left    A
-#                 plru = 8
-#                 return plru
-#             elif state == 1:     # left.left.right   B
-#                 plru = 9
-#                 return plru
-#         elif state == 1:         # left.right
-#             plru = 5
-#             if state == 0:       # left.right.left   C
-#                 plru = 10
-#                 return plru
-#             elif state == 1:     # left.right.right  D
-#                 plru = 11
-#                 return plru
-#     elif state == 1:             # right
-#         plru = 3
-#         if state == 0:           # right.left
-#             plru = 6
-#             if state == 0:       # right.left.left   E
-#                 plru = 12
-#                 return plru
-#             elif state == 1:     # right.left.right  F
-#                 plru = 13
-#                 return plru
-#         elif state == 1:         # right.right
-#             plru = 7
-#             if state == 0:       # right.right.left  G
-#                 plru = 14
-#                 return plru
-#             elif state == 1:     # right.right.right H
-#                 plru = 15
-#                 return plru
+ 
 def color():
     node = 1
     if G.nodes[node]['state'] == 0:
