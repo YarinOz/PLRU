@@ -2,7 +2,7 @@
 
 iterable="A E C B G F D B H A E B C G F B D H A B E C G B F D H B "
 input="A B D H X B F H B "
-for i in {1..10}; do
+for i in {1..1000}; do
     input+=${iterable}
 done
 input="${input%?}"

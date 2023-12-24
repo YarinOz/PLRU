@@ -33,7 +33,7 @@ def hierarchy_pos(G, root=None, width=1., vert_gap = 0.2, vert_loc = 0, xcenter 
             
     return _hierarchy_pos(G, root, width, vert_gap, vert_loc, xcenter)
 
-def TOUCH(line,plru):  # check if line is miss or hit
+def TOUCH(line,plru,ratio):  # check if line is miss or hit
     if line not in valid_inputs:
         print("Invalid line!")
         return
@@ -42,6 +42,7 @@ def TOUCH(line,plru):  # check if line is miss or hit
         if line == G.nodes[i]['state']:  
             traverseal = nx.shortest_path(G, source=1, target=i)
             print("Hit!")
+            ratio += 1
             # print("Path:", traverseal)
             if (G.nodes[traverseal[0]]['state'] == 0 and i in [8,9,10,11]) or (G.nodes[traverseal[0]]['state'] == 1 and i in [12,13,14,15]):
                 G.nodes[traverseal[0]]['state'] = 1 - G.nodes[traverseal[0]]['state'] # toggle root state
@@ -49,14 +50,14 @@ def TOUCH(line,plru):  # check if line is miss or hit
                 G.nodes[traverseal[1]]['state'] = 1 - G.nodes[traverseal[1]]['state'] # toggle level2 state
             if (G.nodes[traverseal[2]]['state'] == 0 and i%2==0 ) or (G.nodes[traverseal[2]]['state'] == 1 and i%2==1):
                 G.nodes[traverseal[2]]['state'] = 1 - G.nodes[traverseal[2]]['state'] # toggle level3 state
-            return  
+            return ratio 
     # miss
     print("Miss!")
     G.nodes[plru]['state'] = line
     traverseal = nx.shortest_path(G, source=1, target=plru)
     for i in traverseal[:-1]:
         G.nodes[i]['state'] = 1 - G.nodes[i]['state'] # toggle state
-    return
+    return ratio
  
 def color():
     node = 1
@@ -132,11 +133,13 @@ if __name__ == "__main__":
     plru = color()
     ##### Run touch sequence in format {line1 line2 line3 ...}#####  touch only lines in valid_inputs
     print("Choose a line to touch:")
-
+    ratio = 0
     line_seq = input().split(' ')
     for line in line_seq:
-        TOUCH(line,plru)
+        ratio = TOUCH(line,plru,ratio)
         plru = color()
+    # prints ratio of hit/miss (disable for blank lines)
+    print("Hit ratio:",round(ratio/len(line_seq),3))
         
     # color edges
     for i in G.edges():
