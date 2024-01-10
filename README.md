@@ -1,4 +1,4 @@
-- cache miss work good, cache hit toggle need to be worked on (understand fully PLRU hit toggle)
+A PLRU binary tree simulator for 8-way associative cache in modern CPU's
 
 TO RUN SIMULATOR:
 1. run nx_tree.py
