@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import random
 
+################################# Functions used to shape the binary-tree ################################################
+
 def hierarchy_pos(G, root=None, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5):
     if not nx.is_tree(G):
         raise TypeError('cannot use hierarchy_pos on a graph that is not a tree')
@@ -33,6 +35,8 @@ def hierarchy_pos(G, root=None, width=1., vert_gap = 0.2, vert_loc = 0, xcenter 
             
     return _hierarchy_pos(G, root, width, vert_gap, vert_loc, xcenter)
 
+#######################################################################################################################
+
 def TOUCH(line,plru,ratio):  # check if line is miss or hit
     if line not in valid_inputs:
         print("Invalid line!")
@@ -58,7 +62,8 @@ def TOUCH(line,plru,ratio):  # check if line is miss or hit
     for i in traverseal[:-1]:
         G.nodes[i]['state'] = 1 - G.nodes[i]['state'] # toggle state
     return ratio
- 
+
+#    This function is the function following and coloring the PLRU line
 def color():
     node = 1
     if G.nodes[node]['state'] == 0:
@@ -113,7 +118,8 @@ def color():
                 return plru
             
 if __name__ == "__main__":
-        
+
+    # Initialize binary tree
     G=nx.Graph()
     G.add_edges_from([(1,2), (1,3), (2,4), (2,5), (3,6), (3,7), (4,8), (4,9),
                     (5,10), (5,11), (6,12), (6,13), (7,14), (7,15)])
@@ -131,6 +137,7 @@ if __name__ == "__main__":
     for i in G.edges():
         G[i[0]][i[1]]['color'] = 'black'
     plru = color()
+    
     ##### Run touch sequence in format {line1 line2 line3 ...}#####  touch only lines in valid_inputs
     print("Choose a line to touch:")
     ratio = 0
@@ -138,6 +145,7 @@ if __name__ == "__main__":
     for line in line_seq:
         ratio = TOUCH(line,plru,ratio)
         plru = color()
+        
     # prints ratio of hit/miss (disable for blank lines)
     print("Hit ratio:",round(ratio/len(line_seq),3))
         
