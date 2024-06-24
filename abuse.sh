@@ -7,4 +7,4 @@ for i in {1..1000}; do
 done
 input="${input%?}"
 
-python3 nx_tree.py <<< "$input"
+python3 plru_tree.py <<< "$input"
