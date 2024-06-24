@@ -24,3 +24,13 @@ run
       ./abuse.sh 
   
 This specific sequence results in an abuse with 0.25 hit ratio and can be changed using ShowTime's paper [purnal et. al.] or manually using the SIM.
+
+### auxilliary material:
+create virtual environment: python3 -m venv plru
+1. run plru venv: 
+      source plru/bin/activate
+      pip install -r requirements.txt
+2. run program as seen above
+3. deactivate venv
+      deactivate
+
