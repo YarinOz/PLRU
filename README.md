@@ -16,6 +16,7 @@ TO RUN SIMULATOR:
 
 4. PLRU_DT.png contain the current tree state.
 
+## Security implications
 Knowledge of the PLRU block state can be abused to create intentional misses in the cache using certain load sequences:
 The following sequence is part of a framework from ShowTime's paper [purnal et. al.].
 
